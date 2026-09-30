@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useDemoState } from '@/lib/demo-context';
 import { getPhaseDescription } from '@/lib/scenario-engine';
@@ -27,15 +27,19 @@ export function ScenarioControls() {
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>
-        <button 
-          className="fixed bottom-20 right-4 w-12 h-12 bg-[#06B6D4] rounded-full flex items-center justify-center shadow-lg text-white hover:bg-cyan-600 transition-colors z-40 active:scale-95"
-          aria-label="Scenario Controls"
-        >
-          <Play size={24} className="ml-1" fill="currentColor" />
-        </button>
-      </SheetTrigger>
+    <>
+      {/* FAB — opens sheet; using a plain div to avoid nested <button> inside SheetTrigger */}
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label="Open Scenario Controls"
+        onClick={() => setOpen(true)}
+        onKeyDown={(e) => e.key === 'Enter' && setOpen(true)}
+        className="fixed bottom-20 right-4 w-12 h-12 bg-[#06B6D4] rounded-full flex items-center justify-center shadow-lg text-white hover:bg-cyan-600 transition-colors z-40 cursor-pointer active:scale-95 select-none"
+      >
+        <Play size={24} className="ml-1" fill="currentColor" />
+      </div>
+      <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="bottom" className="bg-gray-900 border-t border-gray-800 text-gray-100 rounded-t-xl px-4 pb-8 pt-6">
         <SheetHeader className="mb-6 text-left">
           <div className="flex items-center justify-between">
@@ -83,5 +87,6 @@ export function ScenarioControls() {
         </div>
       </SheetContent>
     </Sheet>
+    </>
   );
 }
